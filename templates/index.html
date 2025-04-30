@@ -16,7 +16,7 @@
         body {
             background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
             min-height: 100vh;
-            color: #1a1a1a;
+            color: white;
         }
 
         .container {
@@ -65,7 +65,7 @@
         }
 
         .header-subtitle {
-            color: #1a1a1a;
+            color: white;
             font-size: 1.2rem;
             font-weight: 500;
             opacity: 0.9;
@@ -85,14 +85,14 @@
         }
 
         .welcome-message h2 {
-            color: #1a1a1a;
+            color: white;
             font-size: 2rem;
             font-weight: 600;
             margin-bottom: 1rem;
         }
 
         .welcome-message p {
-            color: #1a1a1a;
+            color: white;
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 1.5rem;
@@ -101,8 +101,8 @@
         .start-button {
             padding: 1.2rem 2.5rem;
             border-radius: 12px;
-            background: linear-gradient(135deg, #f0eeee 0%, #ffffffc4 100%);
-            color: rgb(0, 0, 0);
+            background: linear-gradient(135deg, #007bff 0%, #007bff 100%);
+            color: rgb(243, 243, 243);
             text-decoration: none;
             font-weight: 600;
             font-size: 1.1rem;
@@ -115,7 +115,7 @@
 
         .start-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.3);
+            box-shadow: 0 6px 20px rgba(43, 57, 255, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -136,15 +136,19 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <div class="header-title">💪FORGE-X</div>
+            <div class="header-title">
+                <img src="/static/images/icon1.png" style="height: 2.2em; vertical-align: middle; margin-right: 0.5em;" alt="Logo">
+                FORGE-X
+            </div>
             <div class="header-subtitle">Transform Your Body, Transform Your Life</div>
         </div>
 
         <div class="welcome-message">
             <h2>Welcome to Your Personal Fitness Coach! 🎯</h2>
-            <p>I'm here to help you achieve your fitness goals and create a personalized workout plan that fits your lifestyle. Let's start by understanding your fitness journey and goals.</p>
-            <a href="/chat" class="start-button">Start Your Fitness Journey</a>
+            <p>I'm here to help you achieve your fitness goals and create a personalized workout plan that fits your lifestyle. Let's start by understanding your fitness journey and goals.</p>    
         </div>
+         <a href="/chat" class="start-button">💪🏻Start Today</a>
     </div>
+   
 </body>
 </html> 

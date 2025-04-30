@@ -16,7 +16,7 @@
         body {
             background: linear-gradient(135deg, #ffffff 0%, #f1f1f1 100%);
             min-height: 100vh;
-            color: #000000;
+            color: white;
         }
 
         .container {
@@ -59,7 +59,7 @@
         }
 
         .header-subtitle {
-            color: #000000;
+            color: white;
             font-size: 1.2rem;
             font-weight: 500;
             opacity: 0.9;
@@ -68,6 +68,8 @@
         }
 
         .chat-messages {
+            display: flex;
+            flex-direction: column;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             padding: 2rem;
@@ -78,34 +80,38 @@
         }
 
         .chat-message {
+            display: inline-block;
+            min-width: 40px;
+            max-width: 85%;
             padding: 1.5rem;
             border-radius: 16px;
             margin-bottom: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            max-width: 85%;
             animation: fadeIn 0.3s ease-out;
+            word-break: break-word;
+            white-space: pre-wrap;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
+        }   
 
         .chat-message.user {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
-            margin-left: auto;
+            background: linear-gradient(135deg, #007bffd5 0%, #007bffd3 100%);
+            color: rgb(255, 255, 255);
+            box-shadow: 0 4px 15px rgb(8, 2, 99);
             border-bottom-right-radius: 4px;
-            color: rgb(0, 0, 0);
-            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.2);
+            margin-left: auto;
+            text-align: right;
         }
 
         .chat-message.assistant {
             background: rgba(255, 255, 255, 0.1);
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
             color: #0a0909;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgb(8, 2, 99);
+            border-bottom-left-radius: 4px;
+            margin-right: auto;
+            text-align: left;
         }
 
         .chat-message .content {
@@ -131,8 +137,9 @@
             flex-grow: 1;
             padding: 1.2rem;
             border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            /* border: 2px solid rgba(255, 255, 255, 0.1); */
             background: rgba(255, 255, 255, 0.05);
+            /* border: #000000; */
             color: #000000;
             font-size: 1.1rem;
             transition: all 0.3s ease;
@@ -140,18 +147,21 @@
 
         .message-input:focus {
             outline: none;
-            border-color: #000000;
-            box-shadow: 0 0 0 3px rgba(255, 75, 43, 0.2);
+            /* border-color: #000000; */
+            box-shadow: 0 0 0 1px rgb(8, 2, 99);
         }
 
         .message-input::placeholder {
-            color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            /* border: #000000; */
+            color: #050505;
+            opacity: 1;
         }
 
         .send-button {
             padding: 1.2rem 2.5rem;
             border-radius: 12px;
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: white;
             border: none;
             cursor: pointer;
@@ -164,7 +174,7 @@
 
         .send-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.3);
+            box-shadow: 0 6px 20px rgba(6, 14, 126, 0.3);
         }
 
         .send-button:disabled {
@@ -206,12 +216,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+            background: linear-gradient(135deg, #007bff 0%, #007bff 100%);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+            background: linear-gradient(135deg, #007bff 0%, #007bff 100%);
         }
 
         /* Responsive Design */
@@ -241,7 +251,10 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <div class="header-title">FORGE-X</div>
+            <div class="header-title">
+                <img src="/static/images/icon1.png" style="height: 2.2em; vertical-align: middle; margin-right: 0.5em;" alt="Logo">
+                FORGE-X
+            </div>
             <div class="header-subtitle">Transform Your Body, Transform Your Life</div>
         </div>
 
@@ -252,7 +265,6 @@
                 <input type="text" class="message-input" id="userInput" placeholder="Type your message here...">
                 <button class="send-button" id="sendButton">Send</button>
             </div>
-            <a href="/" class="back-button">Back to Home</a>
         </div>
     </div>
 
