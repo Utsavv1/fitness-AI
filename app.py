@@ -36,10 +36,24 @@ def get_coach_response(conversation_history):
         response = model.generate_content(prompt)
         # Clean up the response
         cleaned_response = response.text.strip()
-        # Remove all asterisks
+        # Remove all unwanted symbols
         cleaned_response = cleaned_response.replace('*', '')
+        cleaned_response = cleaned_response.replace('|', '')
         cleaned_response = cleaned_response.replace('**', '')
-        return cleaned_response
+        cleaned_response = cleaned_response.replace('||', '')
+        # Format text before colons
+        lines = cleaned_response.split('\n')
+        formatted_lines = []
+        for line in lines:
+            if ':' in line:
+                parts = line.split(':', 1)
+                if len(parts) == 2:
+                    formatted_lines.append(f"{parts[0].strip()}:{parts[1]}")
+                else:
+                    formatted_lines.append(line)
+            else:
+                formatted_lines.append(line)
+        return '\n'.join(formatted_lines)
     except Exception as e:
         return f"Error generating response: {str(e)}"
 
@@ -64,9 +78,11 @@ def generate_workout_plan(conversation_history):
         response = model.generate_content(prompt)
         # Clean up the response
         cleaned_response = response.text.strip()
-        # Remove all asterisks
+        # Remove all unwanted symbols
         cleaned_response = cleaned_response.replace('*', '')
+        cleaned_response = cleaned_response.replace('|', '')
         cleaned_response = cleaned_response.replace('**', '')
+        cleaned_response = cleaned_response.replace('||', '')
         # Remove extra spaces
         cleaned_response = cleaned_response.replace('  ', ' ')
         return cleaned_response
@@ -77,14 +93,9 @@ def generate_workout_plan(conversation_history):
 def home():
     return render_template('index.html')
 
-@app.route('/chat')
+@app.route('/chat', methods=['GET'])
 def chat_page():
     return render_template('chat.html')
-
-@app.route('/workout-plan')
-def show_workout_plan():
-    workout_plan = request.args.get('plan', '')
-    return render_template('workout_plan.html', workout_plan=workout_plan)
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -117,6 +128,11 @@ def chat():
             'success': False,
             'error': str(e)
         }), 500
+
+@app.route('/workout-plan')
+def show_workout_plan():
+    workout_plan = request.args.get('plan', '')
+    return render_template('workout_plan.html', workout_plan=workout_plan)
 
 if __name__ == '__main__':
     app.run(debug=True)
