@@ -22,31 +22,34 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 # Initialize translator
 translator = Translator()
 
+# Map frontend language codes to Google Translate language codes
+LANGUAGE_MAP = {
+    'en': 'en',
+    'es': 'es',
+    'fr': 'fr',
+    'hi': 'hi',
+    'guj': 'gu'  # Adding Gujarati language mapping
+}
+
 def translate_text(text, target_lang):
-    """Translate text to target language using Google Translate API"""
+    """Translate text to target language using Google Translate"""
     if target_lang == 'en':
         return text
-    
+        
     try:
-        # Map language codes to Google Translate codes
-        lang_map = {
-            'es': 'es',  # Spanish
-            'fr': 'fr',  # French
-            'de': 'de',  # German
-            'it': 'it',  # Italian
-            'pt': 'pt',  # Portuguese
-            'ru': 'ru',  # Russian
-            'ja': 'ja',  # Japanese
-            'ko': 'ko',  # Korean
-            'zh': 'zh-cn'  # Chinese
-        }
+        # Map frontend language code to Google Translate language code
+        google_lang = LANGUAGE_MAP.get(target_lang, 'en')
         
-        # Get the appropriate language code
-        target_code = lang_map.get(target_lang, target_lang)
+        # Split text into chunks of 500 characters
+        chunks = [text[i:i+500] for i in range(0, len(text), 500)]
+        translated_chunks = []
         
-        # Translate the text
-        result = translator.translate(text, dest=target_code)
-        return result.text
+        for chunk in chunks:
+            translator = Translator()
+            translated = translator.translate(chunk, dest=google_lang)
+            translated_chunks.append(translated.text)
+            
+        return ' '.join(translated_chunks)
     except Exception as e:
         print(f"Translation error: {str(e)}")
         return text

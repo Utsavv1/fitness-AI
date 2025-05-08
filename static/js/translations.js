@@ -39,24 +39,24 @@ const translations = {
             startNew: "नई बातचीत शुरू करें"
         }
     },
-    es: {
+    guj: {
         title: "FORGE-X",
-        subtitle: "Transforma tu cuerpo, transforma tu vida",
-        welcome: "¡Bienvenido a tu Entrenador Personal! 🎯",
-        description: "Estoy aquí para ayudarte a alcanzar tus objetivos de fitness y crear un plan de entrenamiento personalizado que se adapte a tu estilo de vida. Comencemos por entender tu viaje y objetivos de fitness.",
-        startButton: "¡Comienza Hoy💪🏻",
-        chatTitle: "FORGE-X Entrenador - Chat",
-        chatSubtitle: "Creemos tu plan de fitness personalizado",
-        messagePlaceholder: "Escribe tu mensaje aquí...",
-        sendButton: "Enviar",
-        backButton: "Volver al Inicio",
-        userPrefix: "Tú",
-        assistantPrefix: "Entrenador",
+        subtitle: "શરીરને બદલવામાં આવો, જીવનને બદલવામાં આવો",
+        welcome: "તમારા વ્યક્તિગત ફિટનેસ કોચની સાથે તમારો સ્વાગત છે! 🎯",
+        description: "મને તમારા ફિટનેસ લક્ષ્યોને પ્રાપ્ત કરવા અને તમારી જીવનશૈલીના અનુકૂલ એક વ્યક્તિગત કસરત યોજના બનાવવામાં આપવા માટે અહીં છે. તમારી ફિટનેસ યાત્રા અને લક્ષ્યોને સમજવાના શરૂઆતમાં આપો.",
+        startButton: "આજને શરૂ કરો💪🏻",
+        chatTitle: "FORGE-X ફિટનેસ કોચ - ચેટ",
+        chatSubtitle: "આઇયો તમારી વ્યક્તિગત ફિટનેસ યોજના બનાવો",
+        messagePlaceholder: "અહીં તમારો સંદેશ લખો...",
+        sendButton: "ભરતી",
+        backButton: "ઘર પર જાઓ",
+        userPrefix: "તમે",
+        assistantPrefix: "કોચ",
         workoutPlan: {
-            title: "Tu Plan de Entrenamiento Personalizado",
-            subtitle: "Transforma Tu Cuerpo, Transforma Tu Vida",
-            routineTitle: "Tu Rutina de Ejercicios Personalizada",
-            startNew: "Iniciar Nueva Conversación"
+            title: "તમારી વ્યક્તિગત વર્કઆઉટ યોજના",
+            subtitle: "શરીરને બદલવામાં આવો, જીવનને બદલવામાં આવો",
+            routineTitle: "તમારી કસ્ટમાઇઝડ ફિટનેસ રૂટિન",
+            startNew: "નવી ચર્ચા શરૂ કરો"
         }
     },
     fr: {
