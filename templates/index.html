@@ -104,7 +104,7 @@
             background: linear-gradient(135deg, #007bff 0%, #007bff 100%);
             color: rgb(243, 243, 243);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 800;
             font-size: 1.1rem;
             transition: all 0.3s ease;
             text-transform: uppercase;
@@ -115,7 +115,7 @@
 
         .start-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(43, 57, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(1, 4, 49, 0.87);
         }
 
         @media (max-width: 768px) {
@@ -130,12 +130,74 @@
             .welcome-message {
                 padding: 1.5rem;
             }
+            .start-button {
+                padding: 0.8rem 1.5rem;
+            }
+            .header-subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            .header-title {
+                font-size: 2rem;
+            }
+            .welcome-message {
+                padding: 1rem;
+            }
+            .start-button {
+                padding: 0.8rem 1.5rem;
+            }
+            .header-subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        .language-selector {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            z-index: 2;
+        }
+
+        .language-selector select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+            font-weight:bold ;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .language-selector select option {
+            background: #1a4b8c;
+            color: 45a049;
         }
     </style>
 </head>
 <body>
+    
     <div class="container">
         <div class="header-section">
+            <div class="language-selector">
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="fr">French</option>
+                </select>
+            </div>
             <div class="header-title">
                 <img src="/static/images/icon1.png" style="height: 2.2em; vertical-align: middle; margin-right: 0.5em;" alt="Logo">
                 FORGE-X
@@ -147,8 +209,10 @@
             <h2>Welcome to Your Personal Fitness Coach! 🎯</h2>
             <p>I'm here to help you achieve your fitness goals and create a personalized workout plan that fits your lifestyle. Let's start by understanding your fitness journey and goals.</p>    
         </div>
-         <a href="/chat" class="start-button">💪🏻Start Today</a>
+         <a href="/chat" class="start-button">Start Today💪🏻</a>
     </div>
    
+    <script src="/static/js/translations.js"></script>
+    <script src="/static/js/language.js"></script>
 </body>
 </html> 

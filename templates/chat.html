@@ -67,6 +67,29 @@
             z-index: 1;
         }
 
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .message-container.user {
+            align-items: flex-end;
+        }
+
+        .message-container.assistant {
+            align-items: flex-start;
+        }
+
+        .message-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+            color: #333;
+        }
+
         .chat-messages {
             display: flex;
             flex-direction: column;
@@ -85,10 +108,8 @@
             max-width: 85%;
             padding: 1.5rem;
             border-radius: 16px;
-            margin-bottom: 1.5rem;
             animation: fadeIn 0.3s ease-out;
             word-break: break-word;
-            white-space: pre-wrap;
         }
 
         @keyframes fadeIn {
@@ -101,8 +122,6 @@
             color: rgb(255, 255, 255);
             box-shadow: 0 4px 15px rgb(8, 2, 99);
             border-bottom-right-radius: 4px;
-            margin-left: auto;
-            text-align: right;
         }
 
         .chat-message.assistant {
@@ -110,12 +129,9 @@
             color: #0a0909;
             box-shadow: 0 4px 15px rgb(8, 2, 99);
             border-bottom-left-radius: 4px;
-            margin-right: auto;
-            text-align: left;
         }
 
         .chat-message .content {
-            margin-top: 0.5rem;
             line-height: 1.6;
             font-size: 1.1rem;
         }
@@ -137,9 +153,7 @@
             flex-grow: 1;
             padding: 1.2rem;
             border-radius: 12px;
-            /* border: 2px solid rgba(255, 255, 255, 0.1); */
             background: rgba(255, 255, 255, 0.05);
-            /* border: #000000; */
             color: #000000;
             font-size: 1.1rem;
             transition: all 0.3s ease;
@@ -147,13 +161,11 @@
 
         .message-input:focus {
             outline: none;
-            /* border-color: #000000; */
             box-shadow: 0 0 0 1px rgb(8, 2, 99);
         }
 
         .message-input::placeholder {
             border-radius: 10px;
-            /* border: #000000; */
             color: #050505;
             opacity: 1;
         }
@@ -161,7 +173,7 @@
         .send-button {
             padding: 1.2rem 2.5rem;
             border-radius: 12px;
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #007bff 0%, #007bff 100%);
             color: white;
             border: none;
             cursor: pointer;
@@ -174,7 +186,7 @@
 
         .send-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(6, 14, 126, 0.3);
+            box-shadow: 0 6px 20px rgb(1, 5, 49);
         }
 
         .send-button:disabled {
@@ -187,7 +199,7 @@
             display: inline-block;
             padding: 1.2rem 2.5rem;
             border-radius: 12px;
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #007bff 0%, #007bff 100%);
             color: white;
             text-decoration: none;
             font-weight: 600;
@@ -255,93 +267,156 @@
                 <img src="/static/images/icon1.png" style="height: 2.2em; vertical-align: middle; margin-right: 0.5em;" alt="Logo">
                 FORGE-X
             </div>
-            <div class="header-subtitle">Transform Your Body, Transform Your Life</div>
+            <div class="header-subtitle">Let's create your personalized fitness plan</div>
         </div>
 
-        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-messages"></div>
 
         <div class="message-input-section">
             <div class="message-input-wrapper">
-                <input type="text" class="message-input" id="userInput" placeholder="Type your message here...">
-                <button class="send-button" id="sendButton">Send</button>
+                <input type="text" class="message-input" placeholder="Type your message here...">
+                <button class="send-button">Send</button>
             </div>
         </div>
+
+        <!-- <a href="/" class="back-button">Back to Home</a> -->
     </div>
 
+    <script src="/static/js/translations.js"></script>
+    <script src="/static/js/chat-translations.js"></script>
     <script>
-        let messages = [];
         let questionCount = 0;
+        const messages = [];
 
-        const chatMessages = document.getElementById('chatMessages');
-        const userInput = document.getElementById('userInput');
-        const sendButton = document.getElementById('sendButton');
-
-        function addMessage(role, content) {
-            messages.push({ role, content });
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${role}`;
-            messageDiv.innerHTML = `<div class="content">${content}</div>`;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Set default language to English if none is selected
+        if (!localStorage.getItem('selectedLanguage')) {
+            localStorage.setItem('selectedLanguage', 'en');
         }
 
-        async function sendMessage() {
-            const message = userInput.value.trim();
-            if (!message) return;
-
-            // Disable input and button while processing
-            userInput.disabled = true;
-            sendButton.disabled = true;
-
-            // Add user message to chat
-            addMessage('user', message);
-            userInput.value = '';
-
-            try {
-                const response = await fetch('/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        messages,
-                        question_count: questionCount
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    if (data.generate_plan) {
-                        // Redirect to workout plan page
-                        window.location.href = `/workout-plan?plan=${encodeURIComponent(data.response)}`;
-                    } else {
-                        questionCount++;
-                        addMessage('assistant', data.response);
-                    }
-                } else {
-                    addMessage('assistant', 'Error: ' + data.error);
-                }
-            } catch (error) {
-                addMessage('assistant', 'Error: ' + error.message);
-            }
-
-            // Re-enable input and button
-            userInput.disabled = false;
-            sendButton.disabled = false;
-            userInput.focus();
-        }
-
-        // Event listeners
-        sendButton.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', (e) => {
+        document.querySelector('.send-button').addEventListener('click', sendMessage);
+        document.querySelector('.message-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
 
-        // Focus input on load
-        userInput.focus();
+        async function sendMessage() {
+            const input = document.querySelector('.message-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to chat
+            await addMessage(message, true);
+            messages.push({ role: 'user', content: message });
+            
+            // Clear input
+            input.value = '';
+            
+            // Disable input while waiting for response
+            input.disabled = true;
+            document.querySelector('.send-button').disabled = true;
+            
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        messages: messages,
+                        question_count: questionCount,
+                        language: localStorage.getItem('selectedLanguage') || 'en'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Handle chunked responses
+                    if (data.is_chunked) {
+                        // Add each chunk as a separate message
+                        for (const chunk of data.response) {
+                            await addMessage(chunk, false);
+                        }
+                        // Store the complete response in messages array
+                        messages.push({ role: 'assistant', content: data.response.join('\n') });
+                    } else {
+                        // Handle single response
+                        await addMessage(data.response[0], false);
+                        messages.push({ role: 'assistant', content: data.response[0] });
+                    }
+                    
+                    if (data.generate_plan) {
+                        // Redirect to workout plan page with all chunks
+                        const completePlan = data.response.join('\n');
+                        window.location.href = `/workout-plan?plan=${encodeURIComponent(completePlan)}`;
+                    }
+                } else {
+                    throw new Error(data.error || 'Failed to get response');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                await addMessage('Sorry, there was an error processing your request. Please try again.', false);
+            } finally {
+                // Re-enable input
+                input.disabled = false;
+                document.querySelector('.send-button').disabled = false;
+                input.focus();
+            }
+            
+            questionCount++;
+        }
+
+        async function addMessage(content, isUser = false) {
+            const lang = localStorage.getItem('selectedLanguage') || 'en';
+            const messageContainer = document.createElement('div');
+            messageContainer.className = `message-container ${isUser ? 'user' : 'assistant'}`;
+            
+            const prefix = isUser ? translations[lang].userPrefix : translations[lang].assistantPrefix;
+            
+            // Translate the message if not in English
+            let translatedContent = content;
+            if (lang !== 'en') {
+                translatedContent = await translateMessage(content, lang);
+            }
+            
+            messageContainer.innerHTML = `
+                <div class="message-label">${prefix}</div>
+                <div class="chat-message ${isUser ? 'user' : 'assistant'}">
+                    <div class="content">${translatedContent}</div>
+                </div>
+            `;
+            
+            document.querySelector('.chat-messages').appendChild(messageContainer);
+            messageContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function handleLanguageChange(lang) {
+            localStorage.setItem('selectedLanguage', lang);
+            translateChatInterface(lang);
+            
+            // Translate all existing messages
+            const messageContainers = document.querySelectorAll('.message-container');
+            for (const container of messageContainers) {
+                const isUser = container.classList.contains('user');
+                const prefix = isUser ? translations[lang].userPrefix : translations[lang].assistantPrefix;
+                container.querySelector('.message-label').textContent = prefix;
+                
+                const content = container.querySelector('.content');
+                if (lang !== 'en') {
+                    const originalText = content.getAttribute('data-original-text') || content.textContent;
+                    content.setAttribute('data-original-text', originalText);
+                    content.textContent = await translateMessage(originalText, lang);
+                } else {
+                    const originalText = content.getAttribute('data-original-text');
+                    if (originalText) {
+                        content.textContent = originalText;
+                        content.removeAttribute('data-original-text');
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html> 

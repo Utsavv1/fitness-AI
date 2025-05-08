@@ -15,7 +15,6 @@
         body {
             background: linear-gradient(135deg, #ffffffd0 0%, #ffffffd0 100%);
             min-height: 100vh;
-            color: #ffffff;
         }
         
         .container {
@@ -49,6 +48,7 @@
         }
 
         .header-title {
+            color: white;
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 1rem;
@@ -92,7 +92,7 @@
             display: inline-block;
             padding: 1.2rem 2.5rem;
             border-radius: 12px;
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #007bff 0%, #007bff 100%);
             color: white;
             text-decoration: none;
             font-weight: 600;
@@ -106,7 +106,7 @@
 
         .back-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 6px 20px rgb(9, 2, 70);
         }
 
         @media (max-width: 768px) {
@@ -127,16 +127,95 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <div class="header-title">💪 Your Personalized Workout Plan</div>
-            <div class="header-subtitle">Transform Your Body, Transform Your Life</div>
+            <div class="header-title" id="header-title">💪 Your Personalized Workout Plan</div>
+            <div class="header-subtitle" id="header-subtitle">Transform Your Body, Transform Your Life</div>
         </div>
 
         <div class="workout-plan">
-            <h2>Your Customized Fitness Routine</h2>
-            <p>{{ workout_plan }}</p>
+            <h2 id="workout-title">Your Customized Fitness Routine</h2>
+            <div id="workout-content"></div>
         </div>
 
-        <a href="/" class="back-button">Start New Conversation</a>
+        <a href="/" class="back-button" id="back-button">Start New Conversation</a>
     </div>
+
+    <script src="/static/js/translations.js"></script>
+    <script>
+        // Get the workout plan from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const workoutPlan = urlParams.get('plan');
+        const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Function to format the workout plan text
+        function formatWorkoutPlan(text) {
+            // Split the text into lines
+            const lines = text.split('\n');
+            const formattedLines = lines.map(line => {
+                if (line.includes(':')) {
+                    const [header, content] = line.split(':', 2);
+                    return `<div class="workout-line"><strong>${header.trim()}</strong>:${content}</div>`;
+                }
+                return `<div class="workout-line">${line}</div>`;
+            });
+            return formattedLines.join('');
+        }
+
+        // Function to translate text
+        async function translateText(text, targetLang) {
+            if (targetLang === 'en') return text;
+            
+            try {
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        target_lang: targetLang
+                    })
+                });
+                const data = await response.json();
+                return data.translated_text;
+            } catch (error) {
+                console.error('Translation error:', error);
+                return text;
+            }
+        }
+
+        // Function to translate static text
+        async function translateStaticText() {
+            const lang = selectedLanguage;
+            const texts = translations[lang].workoutPlan;
+            
+            // Update static text with translations
+            document.getElementById('header-title').textContent = texts.title;
+            document.getElementById('header-subtitle').textContent = texts.subtitle;
+            document.getElementById('workout-title').textContent = texts.routineTitle;
+            document.getElementById('back-button').textContent = texts.startNew;
+        }
+
+        // Initialize the page
+        async function initializePage() {
+            // Translate static text
+            translateStaticText();
+
+            if (workoutPlan) {
+                // Format the workout plan
+                const formattedPlan = formatWorkoutPlan(workoutPlan);
+                
+                // Translate if needed
+                if (selectedLanguage !== 'en') {
+                    const translatedPlan = await translateText(formattedPlan, selectedLanguage);
+                    document.getElementById('workout-content').innerHTML = translatedPlan;
+                } else {
+                    document.getElementById('workout-content').innerHTML = formattedPlan;
+                }
+            }
+        }
+
+        // Call initialize when the page loads
+        initializePage();
+    </script>
 </body>
 </html> 
