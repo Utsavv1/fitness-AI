@@ -234,6 +234,37 @@
          <a href="/chat" class="start-button">Start Today💪🏻</a>
     </div>
    
+    <script>
+        // Set default language to English if none is selected
+        if (!localStorage.getItem('selectedLanguage')) {
+            localStorage.setItem('selectedLanguage', 'en');
+        }
+
+        // Get selected language
+        const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Function to translate static text
+        function translateStaticText() {
+            const texts = translations[selectedLanguage];
+            document.getElementById('title').textContent = texts.title;
+            document.getElementById('subtitle').textContent = texts.subtitle;
+            document.getElementById('welcome').textContent = texts.welcome;
+            document.getElementById('description').textContent = texts.description;
+            document.getElementById('start-button').textContent = texts.startButton;
+        }
+
+        // Function to handle language change
+        function handleLanguageChange(lang) {
+            localStorage.setItem('selectedLanguage', lang);
+            translateStaticText();
+        }
+
+        // Initialize the page
+        function initializePage() {
+            translateStaticText();
+        }
+        initializePage();
+    </script>
     <script src="/static/js/translations.js"></script>
     <script src="/static/js/language.js"></script>
 </body>

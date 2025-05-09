@@ -28,7 +28,7 @@ LANGUAGE_MAP = {
     'es': 'es',
     'fr': 'fr',
     'hi': 'hi',
-    'guj': 'gu'  # Adding Gujarati language mapping
+    'guj': 'gu',
 }
 
 def translate_text(text, target_lang):
